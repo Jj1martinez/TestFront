@@ -1,35 +1,40 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { fetchAppsIfNeeded } from '../redux/actions'
+import { Route, Switch, NavLink,Router, BrowserRouter } from 'react-router-dom';
+import Home from './views/Home';
+import About from './views/About';
+import NotFound from './views/NotFound';
 
-import Card from './card'
-class App extends Component {
+import { createMemoryHistory } from 'history';
 
-  componentDidMount() {
-    const { dispatch } = this.props
-    dispatch(fetchAppsIfNeeded())
-  }
+const history = createMemoryHistory();
 
+function App() {
+  const [count, setCount] = useState(0);
+  return (
+      <Router history={history}>
+        <div>
+          <ul>
+            <li>
+              <NavLink to="/">Home</NavLink>
+            </li>
+            <li>
+              <NavLink to="/about">About</NavLink>
+            </li>
+          </ul>
 
-  render() {
-    const { isFetching, apps } = this.props
-    const totalapps = apps.length;
-
-    return (
-       <>
-         {isFetching && totalapps === 0 && <h2>Loading...</h2>}
-         {!isFetching && totalapps === 0 && <h2>Empty.</h2>}
-         <Card apps={apps} totalapps={totalapps} />
-       </>
-    );
-  }
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={props => <Home />}
+            />
+            <Route path="/about" component={About} />
+            <Route component={NotFound} />
+          </Switch>
+        </div>
+      </Router>
+  )
 }
- 
-function mapStateToProps({ isFetching, apps }) {
-  return {
-    isFetching,
-    apps
-  }
-}
- 
-export default connect(mapStateToProps)(App)
+
+export default connect()(App)

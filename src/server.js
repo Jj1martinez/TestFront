@@ -4,16 +4,20 @@ import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
 import configureStore from './redux/configureStore'
 import App from './components/app'
+import { StaticRouter } from 'react-router-dom';
 
 
-module.exports = function render(initialState) {
+module.exports = function render(initialState,req) {
   // Configure the store with the initial state provided
   const store = configureStore(initialState)
+  const context = {};
 
   // render the App store static markup ins content variable
   let content = renderToString(
     <Provider store={store} >
-       <App />
+      <StaticRouter location={req.url} context={context}>
+        <App />
+      </StaticRouter>
     </Provider>
   );
 

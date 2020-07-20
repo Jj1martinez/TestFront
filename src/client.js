@@ -18,10 +18,10 @@ const store = configureStore(state)
  * side pages are identical. This includes markup checking,
  * react comments to identify elements and more.
  */
-
+const context = {};
 hydrate(
   <Provider store={store} >
-     <App />
+    <App />
   </Provider>,
   document.querySelector('#app')
 )

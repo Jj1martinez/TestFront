@@ -21,9 +21,9 @@ let initialState = {
 }
 
 // server rendered home page
-app.get('/', (req, res) => {
-  const { preloadedState, content}  = ssr(initialState)
-  const response = template("Server Rendered Page", preloadedState, content)
+app.get('/*', (req, res) => {
+  const { preloadedState, content}  = ssr(initialState,req)
+  const response = template("Beetrack", preloadedState, content)
   res.setHeader('Cache-Control', 'assets, max-age=604800')
   res.send(response);
 });
